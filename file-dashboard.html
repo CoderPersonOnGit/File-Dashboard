@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="buttonstyle.css" />
+    <link rel="stylesheet" href="generallayout.css" />
     <title>File Organizer</title>
     <style>
         body {
@@ -30,50 +31,6 @@
     <input type="file" id="fileInput" multiple />
     <button id="clearBtn">Clear All</button>
     <div id="fileList"></div>
-
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const clearBtn = document.getElementById('clearBtn');
-
-
-        window.addEventListener("DOMContentLoaded", () => {
-        const metadata = JSON.parse(localStorage.getItem("fileMetadata") || "[]");
-        metadata.forEach(file => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
-            fileItem.textContent = `${file.name} (${file.size} KB) - Tags: ${file.tags.join(', ')}`;
-            fileList.appendChild(fileItem)
-
-        });
-    });
-
-    fileInput.addEventListener('change', () => {
-    fileList.innerHTML = '';
-    const metadata = [];
-
-    Array.from(fileInput.files).forEach(file => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-        const sizeKB = Math.round(file.size / 1024);
-        fileItem.textContent = `${file.name} (${sizeKB} KB)`;
-        fileList.appendChild(fileItem);
-
-        metadata.push({
-        name: file.name,
-        size: sizeKB,
-        tags: [] 
-        });
-    });
-
-    localStorage.setItem("fileMetadata", JSON.stringify(metadata));
-    });
-    
-        clearBtn.addEventListener('click', () => {
-        localStorage.removeItem("fileMetadata");
-        fileList.innerHTML = '';
-        });
-
-    </script>
+    <script src="frameworkscript.js"></script>
     </body>
     </html>
