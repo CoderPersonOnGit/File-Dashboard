@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>File Organizer</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    #fileInput {
+      margin-bottom: 20px;
+    }
+    .file-item {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>My File Organizer</h1>
+  <input type="file" id="fileInput" multiple />
+  <div id="fileList"></div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+
+    fileInput.addEventListener('change', () => {
+      fileList.innerHTML = '';
+      Array.from(fileInput.files).forEach(file => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        fileList.appendChild(fileItem);
+      });
+    });
+  </script>
+</body>
+</html>
