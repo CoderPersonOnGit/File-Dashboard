@@ -1,47 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>File Organizer</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      padding: 20px;
-      background-color: #f4f4f4;
-    }
-    h1 {
-      color: #333;
-    }
-    #fileInput {
-      margin-bottom: 20px;
-    }
-    .file-item {
-      background: #fff;
-      padding: 10px;
-      margin-bottom: 5px;
-      border: 1px solid #ccc;
-    }
-  </style>
-</head>
-<body>
-  <h1>My File Organizer</h1>
-  <input type="file" id="fileInput" multiple />
-  <div id="fileList"></div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="buttonstyle.css" />
+    <title>File Organizer</title>
+    <style>
+        body {
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 20px;
+        background-color: #f4f4f4;
+        }
+        h1 {
+        color: #333;
+        }
+        #fileInput {
+        margin-bottom: 20px;
+        }
+        .file-item {
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>My File Organizer</h1>
+    <input type="file" id="fileInput" multiple />
+    <button id="clearBtn">Clear All</button>
+    <div id="fileList"></div>
 
-  <script>
-    const fileInput = document.getElementById('fileInput');
-    const fileList = document.getElementById('fileList');
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const clearBtn = document.getElementById('clearBtn');
+
+
+        window.addEventListener("DOMContentLoaded", () => {
+        const metadata = JSON.parse(localStorage.getItem("fileMetadata") || "[]");
+        metadata.forEach(file => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.textContent = `${file.name} (${file.size} KB) - Tags: ${file.tags.join(', ')}`;
+            fileList.appendChild(fileItem)
+
+        });
+    });
 
     fileInput.addEventListener('change', () => {
-      fileList.innerHTML = '';
-      Array.from(fileInput.files).forEach(file => {
+    fileList.innerHTML = '';
+    const metadata = [];
+
+    Array.from(fileInput.files).forEach(file => {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
-        fileItem.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+        const sizeKB = Math.round(file.size / 1024);
+        fileItem.textContent = `${file.name} (${sizeKB} KB)`;
         fileList.appendChild(fileItem);
-      });
+
+        metadata.push({
+        name: file.name,
+        size: sizeKB,
+        tags: [] 
+        });
     });
-  </script>
-</body>
-</html>
+
+    localStorage.setItem("fileMetadata", JSON.stringify(metadata));
+    });
+    
+        clearBtn.addEventListener('click', () => {
+        localStorage.removeItem("fileMetadata");
+        fileList.innerHTML = '';
+        });
+
+    </script>
+    </body>
+    </html>
