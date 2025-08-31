@@ -21,3 +21,4 @@ A simple web-based tool to help users upload, view, and manage file metadata dir
 - JavaScript (external script via `frameworkscript.js`)
 - Browser `localStorage` for persistence
 
+This is updated, and maintained every week.
